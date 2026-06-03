@@ -209,7 +209,12 @@ export const useMessageStore = create<MessageStore>()((set, get) => ({
 
       const newById = { ...s.byId };
       delete newById[fakeId];
-      newById[realMsg._id] = realMsg;
+
+      const mergedMessage = optimistic.localPreviewUrl
+        ? { ...realMsg, localPreviewUrl: optimistic.localPreviewUrl }
+        : realMsg;
+
+      newById[realMsg._id] = mergedMessage;
 
       const convIds = s.idsByConversation[realMsg.conversationId] ?? [];
       const idx = convIds.indexOf(fakeId);

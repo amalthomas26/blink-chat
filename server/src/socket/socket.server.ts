@@ -46,10 +46,6 @@ export const initSocket = (server: HTTPServer) => {
     try {
       presenceStore.add(userId, socket.id);
 
-      console.log(" user connected:", {
-        userId,
-        socketId: socket.id,
-      });
 
       setUserOnline(userId).catch((err) =>
         console.error("Failed to set user online in DB", err),
@@ -141,10 +137,6 @@ export const initSocket = (server: HTTPServer) => {
 
           if (!removedUserId) return;
 
-          console.log(" user disconnected", {
-            userId: removedUserId,
-            socketId: socket.id,
-          });
           if (!presenceStore.isOnline(removedUserId)) {
             // Only broadcast offline if the user has showOnlineStatus enabled
             // (if they never appeared online to peers, no need to announce offline)

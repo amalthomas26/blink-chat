@@ -11,6 +11,7 @@ import { useMessageActions } from "../store/message.selectors";
 import { useConversationActions } from "../store/conversation.selectors";
 import { getMessageTypeFromFile, validateMediaFile } from "../lib/media";
 import { useUploadActions } from "../store/upload.selectors";
+import { compressImage } from "../lib/compressImage";
 
 // getMessageTypeFromFile is imported from lib/media — no local copy needed.
 
@@ -109,9 +110,13 @@ export function useSendMessage() {
       }
 
       try {
+        // Compress images before uploading — reduces a 4MB phone photo to ~200-400KB.
+        // Videos, audio, PDFs and GIFs are returned unchanged by compressImage.
+        const fileToUpload = draft.file ? await compressImage(draft.file) : null;
+
         const uploadResponse =
-          draft.file && uploadId
-            ? await uploadService.uploadFile(draft.file, (percent) => {
+          fileToUpload && uploadId
+            ? await uploadService.uploadFile(fileToUpload, (percent) => {
                 updateProgress(uploadId, percent);
               })
             : null;

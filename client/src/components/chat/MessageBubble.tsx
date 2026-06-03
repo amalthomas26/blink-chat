@@ -106,9 +106,7 @@ function MessageContent({
       <div className="flex flex-col gap-1">
         <ImageContent
           src={message.mediaUrl}
-          localPreviewUrl={
-            isOptimisticMessage(message) ? message.localPreviewUrl : undefined
-          }
+          localPreviewUrl={message.localPreviewUrl}
           onImageClick={onImageClick}
         />
         {message.content ? (

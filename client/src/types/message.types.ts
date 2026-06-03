@@ -49,6 +49,7 @@ export interface MessageDto {
     originalMessageId: string;
     originalConversationId: string;
   };
+  localPreviewUrl?: string;
 }
 
 export type MessageStatus = "pending" | "sent" | "failed";
@@ -58,7 +59,6 @@ export interface OptimisticMessageDto extends MessageDto {
   status: "pending" | "failed";
   error?: string;
   retryFile?: File;
-  localPreviewUrl?: string;
   uploadId?:string;
 }
 

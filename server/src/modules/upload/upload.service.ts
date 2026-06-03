@@ -49,11 +49,34 @@ export async function uploadFile(
 
   const folderPath = `${folder}/${userId}/${resourceType}`;
 
+  const isImage = resourceType === "image";
+  const isVideo = resourceType === "video";
+
   const result = await new Promise<UploadApiResponse>((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
       {
         folder: folderPath,
         resource_type: resourceType === "audio" ? "video" : resourceType,
+
+        // ── Image optimisations ─────────────────────────────────────────────
+        // quality:auto:good — Cloudinary picks best quality/size tradeoff
+        // fetch_format:auto — serves WebP to browsers that support it (~30% smaller)
+        // width/height + crop:limit — caps resolution, never upscales
+        ...(isImage && {
+          quality: "auto:good",
+          fetch_format: "auto",
+          width: 2048,
+          height: 2048,
+          crop: "limit",
+        }),
+
+        // ── Video optimisations ─────────────────────────────────────────────
+        // quality:auto — Cloudinary auto-selects bitrate for the content
+        // video_codec:auto — H.264 for maximum device compatibility
+        ...(isVideo && {
+          quality: "auto",
+          video_codec: "auto",
+        }),
       },
       (error: unknown, result) => {
         if (error) return reject(error);
