@@ -1,0 +1,58 @@
+name: Deploy BlinkChat to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: SSH Deploy to AWS EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── 1. Checkout code (not strictly needed but good practice) ─────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2. SSH into server and deploy ────────────────────────────────────────
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            set -e
+
+            echo "📦 Pulling latest code..."
+            cd ~/blinkChat
+            git pull origin main
+
+            echo "🔑 Writing environment files..."
+            # Write backend env file (from GitHub Secrets)
+            cat > .env.production << 'ENVEOF'
+            ${{ secrets.BACKEND_ENV }}
+            ENVEOF
+
+            # Write frontend env file (from GitHub Secrets)
+            cat > client/.env << 'ENVEOF'
+            ${{ secrets.FRONTEND_ENV }}
+            ENVEOF
+
+            echo "🐳 Building Docker images..."
+            docker compose build
+
+            echo "🚀 Restarting containers..."
+            docker compose up -d --force-recreate
+
+            echo "🧹 Cleaning up unused Docker images..."
+            docker image prune -f
+
+            echo "✅ Deployment complete!"
+
+      # ── 3. Verify deployment ─────────────────────────────────────────────────
+      - name: Verify deployment
+        run: |
+          sleep 10
+          curl -f https://blink-chat.app/health || echo "Health check failed — please check logs"
