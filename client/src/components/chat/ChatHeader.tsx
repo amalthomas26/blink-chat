@@ -131,20 +131,20 @@ export function ChatHeader({
           <button
             type="button"
             onClick={onSearchOpen}
-            className="rounded-xl p-1 transition hover:bg-white/10 md:p-2"
+            className="rounded-xl p-2 transition hover:bg-white/10 md:p-2"
             title="Search messages"
           >
-            <Search className="h-4 w-4 md:h-5 md:w-5" />
+            <Search className="h-5 w-5 md:h-5 md:w-5" />
           </button>
         ) : null}
         {onMediaClick ? (
           <button
             type="button"
             onClick={onMediaClick}
-            className="rounded-xl p-1 transition hover:bg-white/10 md:p-2"
+            className="rounded-xl p-2 transition hover:bg-white/10 md:p-2"
             title="View media"
           >
-            <ImageIcon className="h-4 w-4 md:h-5 md:w-5" />
+            <ImageIcon className="h-5 w-5 md:h-5 md:w-5" />
           </button>
         ) : null}
         {conversation?.type === "direct" && (
@@ -152,14 +152,14 @@ export function ChatHeader({
             <button
               type="button"
               onClick={() => navigate("/calls")}
-              className="rounded-xl p-1 transition hover:bg-white/10 md:p-2"
+              className="rounded-xl p-2 transition hover:bg-white/10 md:p-2"
               title="Call history"
             >
-              <History className="h-4 w-4 md:h-5 md:w-5" />
+              <History className="h-5 w-5 md:h-5 md:w-5" />
             </button>
             <button
               type="button"
-              className="rounded-xl p-1 hover:bg-white/5 md:p-2"
+              className="rounded-xl p-2 hover:bg-white/5 md:p-2"
               title="Voice call"
               onClick={() => {
                 if (conversation?.peer) {
@@ -172,11 +172,11 @@ export function ChatHeader({
                 }
               }}
             >
-              <Phone className="h-4 w-4 md:h-5 md:w-5" />
+              <Phone className="h-5 w-5 md:h-5 md:w-5" />
             </button>
             <button
               type="button"
-              className="rounded-xl p-1 hover:bg-white/5 md:p-2"
+              className="rounded-xl p-2 hover:bg-white/5 md:p-2"
               title="Video call"
               onClick={() => {
                 if (conversation?.peer) {
@@ -189,7 +189,7 @@ export function ChatHeader({
                 }
               }}
             >
-              <Video className="h-4 w-4 md:h-5 md:w-5" />
+              <Video className="h-5 w-5 md:h-5 md:w-5" />
             </button>
           </>
         )}
@@ -198,9 +198,9 @@ export function ChatHeader({
           <button
             type="button"
             onClick={() => setShowOptions((v) => !v)}
-            className="rounded-xl p-1 hover:bg-white/5 md:p-2"
+            className="rounded-xl p-2 hover:bg-white/5 md:p-2"
           >
-            <MoreVertical className="h-4 w-4 md:h-5 md:w-5" />
+            <MoreVertical className="h-5 w-5 md:h-5 md:w-5" />
           </button>
 
           {showOptions && conversation ? (
