@@ -1,7 +1,8 @@
 import { Suspense, lazy } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { PrivateRoute } from "./components/guards/PrivateRoute";
 import { GuestRoute } from "./components/guards/GuestRoute";
+import { LandingRoute } from "./components/guards/LandingRoute";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { useSocket } from "./hooks/useSocket";
 import { useCallPhase } from "./store/call.selectors";
@@ -37,9 +38,14 @@ const CallHistoryPage = lazy(() =>
 
 const ForgotPasswordPage = lazy(() =>
   import("./pages/auth/ForgotPasswordPage").then((m) => ({
-    default: m.ForgotPasswordPage
+    default: m.ForgotPasswordPage,
   })),
+);
 
+const LandingPage = lazy(() =>
+  import("./pages/landing/LandingPage").then((m) => ({
+    default: m.LandingPage,
+  })),
 );
 
 function PageLoader() {
@@ -92,7 +98,9 @@ export default function App() {
     <>
       <Suspense fallback={<PageLoader />}>
         <Routes>
-          <Route path="/" element={<Navigate to="/chat" replace />} />
+          <Route element={<LandingRoute />}>
+            <Route path="/" element={<LandingPage />} />
+          </Route>
           <Route element={<GuestRoute />}>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />

@@ -10,7 +10,7 @@ import {
   reactToMessage as reactToMessageService,
   removeReaction as removeReactionService
 } from "../../modules/message/message.service";
-import { emitMessage, emitToConversation } from "../../socket/socket.emitter";
+import { emitMessage } from "../../socket/socket.emitter";
 import { getIO } from "../../socket/socket.server";
 
 type MockResponse = {

@@ -8,8 +8,8 @@ import { errorHandler } from "./middleware/error";
 import authRoutes from "./modules/auth/auth.routes";
 import callRoutes from "./modules/call/call.routes";
 import conversationRoutes from "./modules/conversation/conversation.routes";
-import messageRoutes from "./modules/message/message.routes";
 import healthRoutes from "./modules/health/health.routes";
+import messageRoutes from "./modules/message/message.routes";
 import uploadRoutes from "./modules/upload/upload.routes";
 import userRoutes from "./modules/user/user.routes";
 

@@ -149,8 +149,7 @@ export function useWebRTC() {
     const offer = await pc.createOffer({ iceRestart: true });
     await pc.setLocalDescription(offer);
     socket.emit("webrtc:offer", { callId, sdp: offer.sdp! });
- 
-  }, [getStore]);
+  }, []);
 
   const createPC = useCallback(async (): Promise<RTCPeerConnection> => {
     // Fetch ICE config once per call (credentials are time-limited)

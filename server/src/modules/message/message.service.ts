@@ -14,7 +14,14 @@ import { deleteFile } from "../upload/upload.service";
 import { Block } from "../user/block.model";
 import { User } from "../user/user.model";
 
-import Message, { IMessage, MessageType } from "./message.model";
+import {
+  toMessageDto,
+  toConversationListMessageDto,
+  type LeanMessage,
+  type MessageRecord,
+  type ConversationPreviewMessageRecord,
+} from "./message.mapper";
+import Message, { MessageType } from "./message.model";
 import {
   MessageDto,
   DeleteMessageResult,
@@ -25,13 +32,6 @@ import {
   SearchMessagesResult,
   ForwardMessageInput,
 } from "./message.types";
-import {
-  toMessageDto,
-  toConversationListMessageDto,
-  type LeanMessage,
-  type MessageRecord,
-  type ConversationPreviewMessageRecord,
-} from "./message.mapper";
 
 // Backward-compat re-export: callers that import toMessageDto from message.service
 // still work. Does NOT reintroduce the cycle — message.mapper has no imports from

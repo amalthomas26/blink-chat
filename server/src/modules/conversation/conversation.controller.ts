@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 
 import { asyncHandler } from "../../middleware/asyncHandler";
 import { presenceStore } from "../../socket/presence.store";
-import { getIO } from "../../socket/socket.server";
 // Import emitToConversation and emitMessage helpers to fix room-only broadcast issues
 import { emitToConversation, emitMessage } from "../../socket/socket.emitter";
+import { getIO } from "../../socket/socket.server";
 import { createSystemMessage } from "../message/message.service";
 
 import {

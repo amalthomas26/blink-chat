@@ -46,3 +46,8 @@ server/coverage/
 
 # ─── Docker (local override files only) ───────────────────────────────────────
 docker-compose.override.yml
+
+# ─── Resume output (local only, not part of the project) ──────────────────────
+resume-output/
+client/docs/*.pdf
+client/docs/*.docx
