@@ -4,6 +4,38 @@ import type { User, LoginData, RegisterData, LoginResponseSuccess } from "../typ
 import { authService } from "../services/auth.service";
 import { ApiError } from "../lib/api";
 
+// Lazy imports to avoid circular dependency at module load time.
+// These stores are reset on logout to prevent data leakage between accounts.
+const resetAllUserStores = () => {
+  // Dynamically import to break the circular dep chain:
+  // auth.store → conversation.store → conversation.service → api → auth.store
+  void import("./conversation.store").then(({ useConversationStore }) =>
+    useConversationStore.setState({
+      byId: {},
+      orderedIds: [],
+      hasNextPage: false,
+      nextCursor: null,
+      isLoading: false,
+      typingUsers: {},
+      error: null,
+    })
+  );
+  void import("./message.store").then(({ useMessageStore }) =>
+    useMessageStore.setState({
+      byId: {},
+      idsByConversation: {},
+      hasMore: {},
+      pendingMessages: {},
+      isLoadingMessages: {},
+      errorByConversation: {},
+      readCursorByConversation: {},
+    })
+  );
+  void import("./presence.store").then(({ usePresenceStore }) =>
+    usePresenceStore.setState({ onlineUsers: new Set() })
+  );
+};
+
 export interface AuthState {
   user: User | null;
   accessToken: string | null;
@@ -140,6 +172,10 @@ export const useAuthStore = create<AuthStore>()(
           // Ignore logout errors — force clear the client state anyway
         } finally {
           set({ ...initialState, isInitializing: false });
+          // Reset all user-scoped stores so the next account starts clean.
+          // Without this, User A's conversations/messages are visible to User B
+          // immediately after login, until a manual page refresh.
+          resetAllUserStores();
         }
       },
       clearError: () => set({ error: null }),
