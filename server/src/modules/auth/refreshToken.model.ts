@@ -5,6 +5,7 @@ export interface IRefreshToken extends Document {
   sessionId: string;
   token: string;
   expiresAt: Date;
+  idleExpiresAt: Date;
   isRevoked: boolean;
   lastUsedAt?: Date;
   device?: string;
@@ -31,6 +32,10 @@ const refreshTokenSchema = new Schema<IRefreshToken>(
       unique: true,
     },
     expiresAt: {
+      type: Date,
+      required: true,
+    },
+    idleExpiresAt: {
       type: Date,
       required: true,
     },
@@ -61,9 +66,11 @@ const refreshTokenSchema = new Schema<IRefreshToken>(
   },
 );
 
+// Absolute deadline — document deleted after 7 days regardless of activity.
 refreshTokenSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
-//this creates a TTL index (Time-TO_live ) ,mongodb wiil automatically
-//delete documents when expiresAt time is reached
+// Idle deadline — document deleted if session is inactive for IDLE_SESSION_DAYS.
+// Reset to (now + IDLE_SESSION_DAYS) on every successful token refresh.
+refreshTokenSchema.index({ idleExpiresAt: 1 }, { expireAfterSeconds: 0 });
 
 export default mongoose.model<IRefreshToken>(
   "RefreshToken",

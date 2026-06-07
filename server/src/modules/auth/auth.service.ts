@@ -20,6 +20,9 @@ import RefreshToken from "./refreshToken.model";
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const REFRESH_TOKEN_DAYS = 7;
+// If a session goes unused for this many days it is treated as expired
+// everywhere in the system and MongoDB's TTL index deletes it automatically.
+const IDLE_SESSION_DAYS = 3;
 const MAX_SESSIONS = 5;
 
 export const registerUser = async (data: {
@@ -151,6 +154,8 @@ export const loginUser = async (
   const activeSessions = await RefreshToken.countDocuments({
     userId: user._id,
     isRevoked: false,
+    expiresAt: { $gt: new Date() },
+    idleExpiresAt: { $gt: new Date() },
   });
 
   if (activeSessions >= MAX_SESSIONS) {
@@ -166,6 +171,7 @@ export const loginUser = async (
     sessionId,
     token: hashed,
     expiresAt: new Date(Date.now() + REFRESH_TOKEN_DAYS * 86400000),
+    idleExpiresAt: new Date(Date.now() + IDLE_SESSION_DAYS * 86400000),
     lastUsedAt: new Date(),
     device: meta.device || "unknown",
     ip: meta.ip || "unknown",
@@ -219,6 +225,8 @@ export const verifyLogin2FA = async (
   const activeSessions = await RefreshToken.countDocuments({
     userId: user._id,
     isRevoked: false,
+    expiresAt: { $gt: new Date() },
+    idleExpiresAt: { $gt: new Date() },
   });
   if (activeSessions >= MAX_SESSIONS) {
     await RefreshToken.findOneAndUpdate(
@@ -232,6 +240,7 @@ export const verifyLogin2FA = async (
     sessionId,
     token: hashed,
     expiresAt: new Date(Date.now() + REFRESH_TOKEN_DAYS * 86400000),
+    idleExpiresAt: new Date(Date.now() + IDLE_SESSION_DAYS * 86400000),
     lastUsedAt: new Date(),
     device: meta.device || "unknown",
     ip: meta.ip || "unknown",
@@ -268,6 +277,7 @@ export const refreshTokenService = async (token: string) => {
         token: hashed,
         isRevoked: false,
         expiresAt: { $gt: new Date() },
+        idleExpiresAt: { $gt: new Date() },
       },
       { isRevoked: true },
       { new: false, session },
@@ -297,6 +307,8 @@ export const refreshTokenService = async (token: string) => {
           sessionId: existing.sessionId,
           token: newHashed,
           expiresAt: new Date(Date.now() + REFRESH_TOKEN_DAYS * 86400000),
+          // Reset idle clock — user is actively using the app.
+          idleExpiresAt: new Date(Date.now() + IDLE_SESSION_DAYS * 86400000),
           lastUsedAt: new Date(),
           device: existing.device,
           ip: existing.ip,
@@ -414,6 +426,8 @@ export const googleAuthService = async (
   const activeSessions = await RefreshToken.countDocuments({
     userId: user._id,
     isRevoked: false,
+    expiresAt: { $gt: new Date() },
+    idleExpiresAt: { $gt: new Date() },
   });
 
   if (activeSessions >= MAX_SESSIONS) {
@@ -429,6 +443,7 @@ export const googleAuthService = async (
     sessionId,
     token: hashed,
     expiresAt: new Date(Date.now() + REFRESH_TOKEN_DAYS * 86400000),
+    idleExpiresAt: new Date(Date.now() + IDLE_SESSION_DAYS * 86400000),
     lastUsedAt: new Date(),
     device: meta.device || "unknown",
     ip: meta.ip || "unknown",
@@ -587,6 +602,7 @@ export const getSessions= async (
         userId: new (await import("mongoose")).Types.ObjectId(userId),
         isRevoked: false,
         expiresAt: { $gt: new Date() },
+        idleExpiresAt: { $gt: new Date() },
       },
     },
     { $sort: { lastUsedAt: -1 } },
@@ -632,11 +648,12 @@ export const revokeSession = async (
       throw new ApiError(400, "Cannot revoke your current session. Use logout instead.");
     }
   }
-  // Verify the session belongs to this user
+  // Verify the session belongs to this user and is still active
   const session = await RefreshToken.findOne({
     sessionId: targetSessionId,
     userId,
     isRevoked: false,
+    idleExpiresAt: { $gt: new Date() },
   });
   if (!session) throw new ApiError(404, "Session not found");
   // Revoke all tokens with this sessionId
