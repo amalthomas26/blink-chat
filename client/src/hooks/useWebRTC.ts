@@ -16,10 +16,10 @@ const AUDIO_CONSTRAINTS: MediaTrackConstraints = {
 };
 
 const MEDIA_CONSTRAINTS: MediaStreamConstraints[] = [
-  { video: { width: 1920, height: 1080, frameRate: 30 }, audio: AUDIO_CONSTRAINTS },
-  { video: { width: 1280, height: 720, frameRate: 30 }, audio: AUDIO_CONSTRAINTS },
-  { video: { width: 640, height: 480, frameRate: 30 }, audio: AUDIO_CONSTRAINTS },
-  { video: true, audio: AUDIO_CONSTRAINTS },
+  { video: { width: 1920, height: 1080, frameRate: 30, facingMode: "user" }, audio: AUDIO_CONSTRAINTS },
+  { video: { width: 1280, height: 720, frameRate: 30, facingMode: "user" }, audio: AUDIO_CONSTRAINTS },
+  { video: { width: 640, height: 480, frameRate: 30, facingMode: "user" }, audio: AUDIO_CONSTRAINTS },
+  { video: { facingMode: "user" }, audio: AUDIO_CONSTRAINTS },
   { video: false, audio: AUDIO_CONSTRAINTS }, // audio-only fallback
 ];
 
