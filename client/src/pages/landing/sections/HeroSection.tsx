@@ -4,11 +4,51 @@ import type { Variants } from "framer-motion";
 
 // Static chat mockup data — no real data fetched
 const MOCK_MESSAGES = [
-  { id: 1, sender: "Alex", avatar: "A", text: "Hey team! Just pushed the new feature 🚀", time: "09:41", own: false, color: "bg-violet-500" },
-  { id: 2, sender: "You", avatar: "Y", text: "Looks great! Running tests now.", time: "09:42", own: true, color: "bg-indigo-500" },
-  { id: 3, sender: "Sara", avatar: "S", text: "The UI looks polished 🔥 nice work!", time: "09:43", own: false, color: "bg-cyan-500" },
-  { id: 4, sender: "You", avatar: "Y", text: "Thanks! Video call in 5?", time: "09:44", own: true, color: "bg-indigo-500" },
-  { id: 5, sender: "Alex", avatar: "A", text: "Sure, joining now 👍", time: "09:44", own: false, color: "bg-violet-500" },
+  {
+    id: 1,
+    sender: "Alex",
+    avatar: "A",
+    text: "Hey team! Just pushed the new feature 🚀",
+    time: "09:41",
+    own: false,
+    color: "bg-violet-500",
+  },
+  {
+    id: 2,
+    sender: "You",
+    avatar: "Y",
+    text: "Looks great! Running tests now.",
+    time: "09:42",
+    own: true,
+    color: "bg-indigo-500",
+  },
+  {
+    id: 3,
+    sender: "Sara",
+    avatar: "S",
+    text: "The UI looks polished 🔥 nice work!",
+    time: "09:43",
+    own: false,
+    color: "bg-cyan-500",
+  },
+  {
+    id: 4,
+    sender: "You",
+    avatar: "Y",
+    text: "hey call me in perrson via vid",
+    time: "09:44",
+    own: true,
+    color: "bg-indigo-500",
+  },
+  {
+    id: 5,
+    sender: "Alex",
+    avatar: "A",
+    text: "Sure",
+    time: "09:44",
+    own: false,
+    color: "bg-violet-500",
+  },
 ];
 
 const ONLINE_USERS = [
@@ -46,7 +86,6 @@ export function HeroSection() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-
           {/* Left — copy */}
           <m.div
             variants={stagger}
@@ -122,18 +161,24 @@ export function HeroSection() {
                   <span className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
                 </div>
                 <div className="flex-1 text-center">
-                  <span className="text-xs text-gray-400 font-medium"># general</span>
+                  <span className="text-xs text-gray-400 font-medium">
+                    # general
+                  </span>
                 </div>
                 {/* Live badge */}
                 <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-500/15 border border-green-500/25">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                  <span className="text-[10px] text-green-400 font-medium">Live</span>
+                  <span className="text-[10px] text-green-400 font-medium">
+                    Live
+                  </span>
                 </div>
               </div>
 
               {/* Online users bar */}
               <div className="flex items-center gap-2 px-4 py-2 border-b border-white/5 bg-[#0d1220]/40">
-                <span className="text-[10px] text-gray-500 uppercase tracking-wider">Online</span>
+                <span className="text-[10px] text-gray-500 uppercase tracking-wider">
+                  Online
+                </span>
                 <div className="flex -space-x-1.5">
                   {ONLINE_USERS.map((u) => (
                     <div
@@ -142,7 +187,9 @@ export function HeroSection() {
                     />
                   ))}
                 </div>
-                <span className="text-[10px] text-gray-500">{ONLINE_USERS.length} online</span>
+                <span className="text-[10px] text-gray-500">
+                  {ONLINE_USERS.length} online
+                </span>
               </div>
 
               {/* Messages */}
@@ -157,7 +204,9 @@ export function HeroSection() {
                     >
                       {msg.avatar}
                     </div>
-                    <div className={`flex flex-col gap-0.5 max-w-[78%] ${msg.own ? "items-end" : "items-start"}`}>
+                    <div
+                      className={`flex flex-col gap-0.5 max-w-[78%] ${msg.own ? "items-end" : "items-start"}`}
+                    >
                       <div
                         className={`px-3 py-1.5 rounded-2xl text-xs text-white leading-relaxed ${
                           msg.own
@@ -167,7 +216,9 @@ export function HeroSection() {
                       >
                         {msg.text}
                       </div>
-                      <span className="text-[9px] text-gray-600">{msg.time}</span>
+                      <span className="text-[9px] text-gray-600">
+                        {msg.time}
+                      </span>
                     </div>
                   </div>
                 ))}
@@ -176,9 +227,15 @@ export function HeroSection() {
               {/* Input bar */}
               <div className="px-4 py-3 border-t border-white/5 bg-[#0d1220]/60">
                 <div className="flex items-center gap-2 bg-[#1a2030] rounded-xl px-3 py-2 border border-white/5">
-                  <span className="text-[11px] text-gray-500 flex-1">Type a message…</span>
+                  <span className="text-[11px] text-gray-500 flex-1">
+                    Type a message…
+                  </span>
                   <div className="w-6 h-6 rounded-lg bg-violet-600 flex items-center justify-center">
-                    <svg className="w-3 h-3 text-white rotate-90" fill="currentColor" viewBox="0 0 20 20">
+                    <svg
+                      className="w-3 h-3 text-white rotate-90"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
                       <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 16.571V11a1 1 0 112 0v5.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
                     </svg>
                   </div>

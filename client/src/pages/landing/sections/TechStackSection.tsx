@@ -60,7 +60,7 @@ const TECH_STACK: TechCategory[] = [
     items: [
       { name: "MongoDB", description: "Primary database", color: "bg-green-500/10", textColor: "text-green-300", border: "border-green-500/20" },
       { name: "Mongoose", description: "ODM layer", color: "bg-red-500/10", textColor: "text-red-300", border: "border-red-500/20" },
-      { name: "GridFS / S3", description: "Media storage", color: "bg-amber-500/10", textColor: "text-amber-300", border: "border-amber-500/20" },
+      { name: "Cloudinary", description: "Media storage", color: "bg-amber-500/10", textColor: "text-amber-300", border: "border-amber-500/20" },
     ],
   },
   {
