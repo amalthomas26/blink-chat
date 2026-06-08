@@ -36,7 +36,7 @@ export function ChatLayout({
       {showThread && (
         <section
           className="flex min-w-0 flex-1 flex-col bg-[#101620]"
-          style={{ height: "100dvh" }}
+          style={{ height: "100%" }}
         >
           {thread}
         </section>

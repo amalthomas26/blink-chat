@@ -1,4 +1,4 @@
-import { memo, useMemo, useState, useCallback, useEffect } from "react";
+import { memo, useMemo, useState, useCallback, useEffect, useRef } from "react";
 import { Check, CheckCheck, RotateCcw, MoreHorizontal } from "../ui/icons";
 import type { MessageDto, OptimisticMessageDto } from "../../types";
 import type { ConversationListUserDto } from "../../types";
@@ -155,6 +155,38 @@ function MessageBubbleComponent({
   const [popoverAnchor, setPopoverAnchor] = useState<DOMRect | null>(null);
   const [flashHighlight, setFlashHighlight] = useState(false);
 
+  // iOS Safari long-press → context menu.
+  // `contextmenu` is not fired for touch events on iOS, so we use a
+  // 500 ms touchstart timer instead.
+  const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const longPressTouchRef = useRef<{ x: number; y: number } | null>(null);
+
+  const handleTouchStart = useCallback(
+    (e: React.TouchEvent) => {
+      const touch = e.touches[0];
+      longPressTouchRef.current = { x: touch.clientX, y: touch.clientY };
+      longPressTimerRef.current = setTimeout(() => {
+        longPressTimerRef.current = null;
+        if (longPressTouchRef.current) {
+          onContextMenuOpen(
+            message._id,
+            longPressTouchRef.current.x,
+            longPressTouchRef.current.y,
+          );
+        }
+      }, 500);
+    },
+    [message._id, onContextMenuOpen],
+  );
+
+  const cancelLongPress = useCallback(() => {
+    if (longPressTimerRef.current !== null) {
+      clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
+    longPressTouchRef.current = null;
+  }, []);
+
   // Trigger flash animation when highlighted
   useEffect(() => {
     if (isHighlighted) {
@@ -216,6 +248,12 @@ function MessageBubbleComponent({
         event.preventDefault();
         onContextMenuOpen(message._id, event.clientX, event.clientY);
       }}
+      // iOS Safari: contextmenu is not fired for touch. Use a long-press
+      // timer on touchstart instead. touchmove/touchend cancel the timer.
+      onTouchStart={handleTouchStart}
+      onTouchMove={cancelLongPress}
+      onTouchEnd={cancelLongPress}
+      onTouchCancel={cancelLongPress}
     >
       <div
         className={cn(

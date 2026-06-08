@@ -46,6 +46,7 @@ export function AvatarViewer({ src, alt = "Photo", onClose }: AvatarViewerProps)
         onClick={(e) => e.stopPropagation()}
         className="max-h-[90vh] max-w-[90vw] rounded-2xl object-contain shadow-2xl"
         draggable={false}
+        referrerPolicy="no-referrer"
       />
     </div>
   );

@@ -1,1 +1,32 @@
 @import "tailwindcss";
+
+/* ── Safari / cross-browser baseline ───────────────────────────────────── */
+
+/*
+ * Ensure the document fills the viewport so 100dvh in ChatLayout
+ * propagates correctly on Safari (where html/body don't default to h:100%).
+ */
+html,
+body,
+#root {
+  height: 100%;
+  /* Prevent iOS Safari from adding elastic overscroll on the document. */
+  overscroll-behavior: none;
+}
+
+/*
+ * Mobile bottom nav safe-area padding.
+ * We write the rule twice so Safari < 12 (no env() support) gets the
+ * static 8px fallback, and all modern browsers get the device-specific value.
+ * An inline style can only hold one declaration per property, so this MUST
+ * live in CSS.
+ */
+.mobile-nav {
+  padding-bottom: 8px; /* static fallback */
+}
+
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .mobile-nav {
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+  }
+}

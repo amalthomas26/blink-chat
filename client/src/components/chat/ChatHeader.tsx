@@ -97,6 +97,7 @@ export function ChatHeader({
               src={avatarUrl}
               alt={name}
               className="h-9 w-9 rounded-full border border-white/10 object-cover md:h-12 md:w-12"
+              referrerPolicy="no-referrer"
             />
           ) : (
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#2a2247] text-sm font-semibold text-[#c4b5fd] md:h-12 md:w-12">

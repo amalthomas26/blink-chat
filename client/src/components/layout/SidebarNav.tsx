@@ -59,7 +59,7 @@ export function SidebarNav() {
           className="flex h-12 w-12 items-center justify-center rounded-full bg-[#2a2247] text-sm font-semibold text-[#c4b5fd] transition-opacity hover:opacity-80 overflow-hidden"
         >
           {user?.avatar ? (
-            <img src={user.avatar} alt={user.name} className="h-full w-full rounded-full object-cover" />
+            <img src={user.avatar} alt={user.name} className="h-full w-full rounded-full object-cover" referrerPolicy="no-referrer" />
           ) : (
             userInitial
           )}
@@ -68,8 +68,7 @@ export function SidebarNav() {
 
       {/* ── Mobile: horizontal bottom tab bar ───────────────────────── */}
       <nav
-        className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around border-t border-[#273244] bg-[#101620] px-4 py-2 md:hidden"
-        style={{ paddingBottom: "env(safe-area-inset-bottom, 12px)" }}
+        className="mobile-nav fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around border-t border-[#273244] bg-[#101620] px-4 py-2 md:hidden"
       >
         {/* Logo replaces the generic Chats tab icon on mobile */}
         <NavLink to="/chat" className={mobileNavLinkClassName}>
@@ -89,7 +88,7 @@ export function SidebarNav() {
         <NavLink to="/profile" className="flex flex-col items-center gap-1 px-4 py-1">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2a2247] text-sm font-semibold text-[#c4b5fd] overflow-hidden">
             {user?.avatar ? (
-              <img src={user.avatar} alt={user.name} className="h-full w-full rounded-full object-cover" />
+              <img src={user.avatar} alt={user.name} className="h-full w-full rounded-full object-cover" referrerPolicy="no-referrer" />
             ) : (
               userInitial
             )}

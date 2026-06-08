@@ -332,7 +332,7 @@ export function MessageComposer({
           placeholder={
             isMediaPending ? "Add a caption..." : "Type a message..."
           }
-          className="h-11 min-w-0 flex-1 rounded-xl bg-[#1d2635] px-4 text-sm text-white outline-none placeholder:text-slate-400"
+          className="h-11 min-w-0 flex-1 rounded-xl bg-[#1d2635] px-4 text-base text-white outline-none placeholder:text-slate-400 md:text-sm"
         />
 
         {isRecording ? null : (

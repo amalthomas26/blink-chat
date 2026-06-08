@@ -203,6 +203,7 @@ export function ProfilePage() {
                   alt={user?.name}
                   onClick={() => setViewerSrc(avatarUrl)}
                   className="h-28 w-28 cursor-zoom-in rounded-full border-2 border-[#273244] object-cover sm:h-36 sm:w-36"
+                  referrerPolicy="no-referrer"
                 />
               ) : (
                 <div className="flex h-28 w-28 items-center justify-center rounded-full bg-[#2a2247] text-3xl font-bold text-[#c4b5fd] sm:h-36 sm:w-36 sm:text-4xl">

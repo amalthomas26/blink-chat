@@ -198,6 +198,7 @@ function BlockedUsersList() {
                                             src={user.avatar}
                                             alt={user.name}
                                             className="h-9 w-9 rounded-full object-cover border border-slate-700"
+                                            referrerPolicy="no-referrer"
                                         />
                                     ) : (
                                         <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#2a2247] text-xs font-semibold text-[#c4b5fd]">

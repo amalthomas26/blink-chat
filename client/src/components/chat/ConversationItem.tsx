@@ -107,6 +107,7 @@ function ConversationItemComponent({
             }
             alt={displayName}
             className="h-14 w-14 rounded-full border border-white/10 object-cover"
+            referrerPolicy="no-referrer"
           />
         ) : (
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#2a2247] text-lg font-semibold text-[#8b5cf6]">

@@ -201,6 +201,9 @@ export function MessageList({
         ref={scrollRef}
         onScroll={handleScroll}
         className="h-full overflow-y-auto bg-[#0b1017] px-1 py-4"
+        // Safari iOS: enable momentum scrolling so scrollTop is reliable during gestures
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        style={{ WebkitOverflowScrolling: "touch" } as any}
       >
         {isLoading && rows.length === 0 ? (
           <div className="py-8 text-center text-sm text-slate-400">
